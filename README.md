@@ -21,7 +21,7 @@
   </p>
 </div>
 
-![Alt text](https://github.com/luke-beep/HoneCTRL/blob/main/Files/Product/image.png?raw=true)
+![Alt text](https://github.com/luke-beep/HoneCTRL/blob/main/Files/Product/HoneCTRL.png?raw=true)
 
 <details>
   <summary>Table of Contents</summary>
