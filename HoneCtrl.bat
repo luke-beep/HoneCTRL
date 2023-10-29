@@ -156,7 +156,7 @@ echo.
 echo.
 echo.
 echo.
-echo                                     %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m Media         %COL%[33m[%COL%[37m 4 %COL%[33m]%COL%[90m Privacy        %COL%[33m[%COL%[37m 5 %COL%[33m]%COL%[90m Aesthetics
+echo                                     %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m Media         %COL%[33m[%COL%[37m 4 %COL%[33m]%COL%[90m Privacy        %COL%[33m[%COL%[37m 5 %COL%[33m]%COL%[37m Aesthetics
 echo.
 echo.
 echo.
@@ -176,7 +176,7 @@ if "%choice%"=="1" set PG=TweaksPG1 & goto Tweaks
 if "%choice%"=="2" goto GameSettings
 if "%choice%"=="3" goto HoneCTRLRenders
 if "%choice%"=="4" call:Comingsoon
-if "%choice%"=="5" call:Comingsoon
+if "%choice%"=="5" call:Aesthetics
 if "%choice%"=="6" goto disclaimer2
 if "%choice%"=="7" goto More
 if "%choice%"=="8" exit /b
@@ -3941,7 +3941,7 @@ if exist "%USERPROFILE%\Documents\systemtransparency.ini" del /Q "%USERPROFILE%\
 if exist "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Clear.exe" ( goto TransparencySetup1 ) else ( goto TransparencySetup11 ) >nul 2>&1
 :TransparencySetup11
 cd "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-curl -g -LJ -# "https://github.com/auraside/luke-beep/raw/main/Files/Aesthetics/Clear.exe" -o "Clear.exe"
+curl -g -LJ -# "https://github.com/luke-beep/HoneCTRL/raw/main/Files/Aesthetics/Clear.exe" -o "Clear.exe"
 :TransparencySetup1
 cls
 echo.
