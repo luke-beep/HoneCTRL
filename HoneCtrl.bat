@@ -3636,15 +3636,13 @@ if "%choice%"=="1" goto About
 if "%choice%"=="2" goto ViewDisclaimer
 if "%choice%"=="3" call:Backup
 if "%choice%"=="4" goto Credits
-if /i "%choice%"=="5" goto MainMenu
-if /i "%choice%"=="6" exit /b
+if /i "%choice%"=="6" goto MainMenu
+if /i "%choice%"=="7" exit /b
 goto More
 
 :About
 cls
-echo About
-echo Owned by AuraSide, Inc. Copyright Claimed.
-echo This is a GUI for the HoneCTRL Manual Tweaks.
+echo Created by AuraSide, Inc. Maintained by luke-beep.
 echo.
 call :ColorText 8 "                                                      [ press X to go back ]"
 echo.
