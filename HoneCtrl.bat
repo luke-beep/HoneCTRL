@@ -3692,32 +3692,11 @@ cls
 echo.
 echo.
 echo.
-echo %COL%[90m                                                         Product Lead
-echo %COL%[97m                                                       Ryan A. - Ryan
+echo %COL%[90m                                                         Creators
+echo %COL%[97m                                                       AuraSide (https://discord.gg/hone)
 echo.
-echo.
-echo.
-echo %COL%[90m                                                   Product Development Lead
-echo %COL%[97m                                                  Christina A. - UnLovedCookie
-echo.
-echo.
-echo.
-echo %COL%[90m                                                      Product Development
-echo %COL%[97m                                                   Jonathan H. - Jonathan
-echo %COL%[97m                                                     Dexter K. - Drevoes
-echo %COL%[97m                                                     Arthur C. - Yaamruo
-echo %COL%[97m                                                    Valeria D. - Melody
-echo.
-echo.
-echo.
-echo %COL%[90m                                                     Network Optimizations
-echo %COL%[97m                                                      Krzysiek - VVASD
-echo %COL%[97m                                                      Filip G. - Curtal
-echo.
-echo.
-echo.
-echo %COL%[90m                                                        Render Settings
-echo %COL%[97m                                                       Eesa H. - mmunk
+echo %COL%[90m                                                        Maintainer
+echo %COL%[97m                                                       luke-beep (https://github.com/luke-beep)
 echo.
 echo.
 echo.
