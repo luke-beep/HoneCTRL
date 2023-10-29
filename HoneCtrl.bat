@@ -47,7 +47,7 @@ reg query "HKCU\Software\Hone" /v "Disclaimer" >nul 2>&1 && goto CheckForUpdates
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -72,13 +72,13 @@ echo.
 echo.
 set /p "input=%DEL%                                                            >: %COL%[92m"
 if /i "!input!" neq "i agree" goto Disclaimer
-reg add "HKCU\Software\Hone" /v "Disclaimer" /f >nul 2>&1
+reg add "HKCU\Software\HoneCTRL" /v "Disclaimer" /f >nul 2>&1
 
 :CheckForUpdates
 set local=2.7
 set localtwo=%LOCAL%
 if exist "%TEMP%\Updater.bat" DEL /S /Q /F "%TEMP%\Updater.bat" >nul 2>&1
-curl -g -L -# -o "%TEMP%\Updater.bat" "https://raw.githubusercontent.com/auraside/HoneCTRL/main/Files/HoneCTRLVer" >nul 2>&1
+curl -g -L -# -o "%TEMP%\Updater.bat" "https://raw.githubusercontent.com/luke-beep/HoneCTRL/main/Files/HoneCTRLVersion" >nul 2>&1
 call "%TEMP%\Updater.bat"
 if "%LOCAL%" gtr "%LOCALTWO%" (
 	clsr
@@ -100,7 +100,7 @@ if "%LOCAL%" gtr "%LOCALTWO%" (
 	%SYSTEMROOT%\System32\choice.exe /c:YN /n /m "%DEL%                                >:"
 	set choice=!errorlevel!
 	if !choice! == 1 (
-		curl -L -o %0 "https://github.com/auraside/HoneCTRL/releases/latest/download/HoneCTRL.Bat" >nul 2>&1
+		curl -L -o %0 "https://github.com/luke-beep/HoneCTRL/releases/latest/download/HoneCTRL.Bat" >nul 2>&1
 		call %0
 		exit /b
 	)
@@ -108,8 +108,8 @@ if "%LOCAL%" gtr "%LOCALTWO%" (
 )
 
 REM Restart Checks
-if exist "%SYSTEMDRIVE%\Hone\Drivers\NvidiaHone.exe" "%SYSTEMDRIVE%\Desktop\Hone\Drivers\NvidiaHone.exe" >nul 2>&1
-if exist "%SYSTEMDRIVE%\Hone\Drivers\NvidiaHone.exe" del /Q "%SYSTEMDRIVE%\Desktop\Hone\Drivers\NvidiaHone.exe" >nul 2>&1
+if exist "%SYSTEMDRIVE%\HoneCTRL\Drivers\Nvidia.exe" "%SYSTEMDRIVE%\Desktop\HoneCTRL\Drivers\Nvidia.exe" >nul 2>&1
+if exist "%SYSTEMDRIVE%\HoneCTRL\Drivers\Nvidia.exe" del /Q "%SYSTEMDRIVE%\Desktop\HoneCTRL\Drivers\Nvidia.exe" >nul 2>&1
 if exist "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Driverinstall.bat" del /Q "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Driverinstall.bat" >nul 2>&1
 
 REM Attempt to enable WMIC
@@ -117,31 +117,31 @@ dism /online /enable-feature /featurename:MicrosoftWindowsWMICore /NoRestart >nu
 
 REM Check If First Launch
 set firstlaunch=1
->nul 2>&1 call "%SYSTEMDRIVE%\Hone\HoneRevert\firstlaunch.bat"
+>nul 2>&1 call "%SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\firstlaunch.bat"
 if "%firstlaunch%" == "0" (goto MainMenu)
 
 REM Restore Point
-reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
-powershell -ExecutionPolicy Unrestricted -NoProfile Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
-powershell -ExecutionPolicy Unrestricted -NoProfile Checkpoint-Computer -Description 'Hone Restore Point' >nul 2>&1
+REM reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
+REM powershell -ExecutionPolicy Unrestricted -NoProfile Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
+REM powershell -ExecutionPolicy Unrestricted -NoProfile Checkpoint-Computer -Description 'HoneCTRL Restore Point' >nul 2>&1
 
 REM HKCU & HKLM backup
 
 for /F "tokens=2" %%i in ('date /t') do set date=%%i
 set date1=%date:/=.%
->nul 2>&1 md %SYSTEMDRIVE%\Hone\HoneRevert\%date1%
-reg export HKCU %SYSTEMDRIVE%\Hone\HoneRevert\%date1%\HKLM.reg /y >nul 2>&1
-reg export HKCU %SYSTEMDRIVE%\Hone\HoneRevert\%date1%\HKCU.reg /y >nul 2>&1
-echo set "firstlaunch=0" > %SYSTEMDRIVE%\Hone\HoneRevert\firstlaunch.bat
+>nul 2>&1 md %SYSTEMDRIVE%\Hone\HoneCTRLRevert\%date1%
+reg export HKCU %SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\%date1%\HKLM.reg /y >nul 2>&1
+reg export HKCU %SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\%date1%\HKCU.reg /y >nul 2>&1
+echo set "firstlaunch=0" > %SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\firstlaunch.bat
 
 :MainMenu
 Mode 130,45
-TITLE Hone Control Panel %localtwo%
+TITLE HoneCTRL Panel %localtwo%
 set "choice="
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -183,7 +183,7 @@ if "%choice%"=="8" exit /b
 if "%choice%"=="9" goto Dog
 goto MainMenu
 
-:HoneTitle
+:HoneCTRLTitle
 echo                                       %COL%[33m+N.
 echo                            //        oMMs
 echo                           +Nm`    ``yMMm-     ::::::::     ::::    :::    ::::::::::
@@ -202,7 +202,7 @@ goto :eof
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -221,7 +221,7 @@ goto :eof
 
 :Tweaks
 Mode 130,45
-TITLE Hone Control Panel %localtwo%
+TITLE HoneCTRL Panel %localtwo%
 set "choice="
 set "BLANK=   "
 REM Check Values
@@ -241,7 +241,7 @@ for %%i in (PWROF MEMOF AUDOF TMROF NETOF AFFOF MOUOF AFTOF NICOF DSSOF SERVOF D
 	for /f "tokens=3" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control" /v "SvcHostSplitThresholdInKB"') do (set /a currentmem=%%a)
 	if "!currentmem!" neq "!mem!" set "MEMOF=%COL%[91mOFF"
 	REM Nvidia Telemetry
-	reg query "HKCU\Software\Hone" /v "NVTTweaks" || set "NVTOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "NVTTweaks" || set "NVTOF=%COL%[91mOFF"
 	REM Nvidia HDCP
 	for /f %%a in ('reg query "HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HKEY"') do reg query "%%a" /v "RMHdcpKeyglobZero" | find "0x1" || set "HDCOF=%COL%[91mOFF"
 	REM Disable Preemption
@@ -256,37 +256,37 @@ for %%i in (PWROF MEMOF AUDOF TMROF NETOF AFFOF MOUOF AFTOF NICOF DSSOF SERVOF D
 	REM Power Plan
 	powercfg /GetActiveScheme | find "Hone" || set "PWROF=%COL%[91mOFF"
 	REM All GPU Tweaks
-	reg query "HKCU\Software\Hone" /v "AllGPUTweaks" || set "ALLOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "AllGPUTweaks" || set "ALLOF=%COL%[91mOFF"
 	REM Profile Inspector Tweaks
-	reg query "HKCU\Software\Hone" /v "NpiTweaks" || set "NPIOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "NpiTweaks" || set "NPIOF=%COL%[91mOFF"
 	REM TCPIP
-	reg query "HKCU\Software\Hone" /v "TCPIP" || set "TCPOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "TCPIP" || set "TCPOF=%COL%[91mOFF"
 	REM Nvidia Tweaks
-	reg query "HKCU\Software\Hone" /v "NvidiaTweaks" || set "NVIOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "NvidiaTweaks" || set "NVIOF=%COL%[91mOFF"
 	REM Memory Optimization
-	reg query "HKCU\Software\Hone" /v "MemoryTweaks" || set "ME2OF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "MemoryTweaks" || set "ME2OF=%COL%[91mOFF"
 	REM Network Internet Tweaks
-	reg query "HKCU\Software\Hone" /v "InternetTweaks" || set "NETOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "InternetTweaks" || set "NETOF=%COL%[91mOFF"
 	REM Services Tweaks
-	reg query "HKCU\Software\Hone" /v "ServicesTweaks" || set "SERVOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "ServicesTweaks" || set "SERVOF=%COL%[91mOFF"
 	REM Debloat Tweaks
-	reg query "HKCU\Software\Hone" /v "DebloatTweaks" || set "DEBOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "DebloatTweaks" || set "DEBOF=%COL%[91mOFF"
 	REM Mitigations Tweaks
-	reg query "HKCU\Software\Hone" /v "MitigationsTweaks" || set "MITOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "MitigationsTweaks" || set "MITOF=%COL%[91mOFF"
 	REM Affinities
-	reg query "HKCU\Software\Hone" /v "AffinityTweaks" || set "AFFOF=%COL%[91mOFF"
+	reg query "HKCU\Software\HoneCTRL" /v "AffinityTweaks" || set "AFFOF=%COL%[91mOFF"
 	REM DisableWriteCombining
 	reg query "HKLM\SYSTEM\CurrentControlSet\Services\nvlddmkm" /v "DisableWriteCombining" || set "DWCOF=%COL%[91mOFF"
 	REM Mouse Fix
 	reg query "HKCU\Control Panel\Mouse" /v "SmoothMouseYCurve" | find "0000000000000000000038000000000000007000000000000000A800000000000000E00000000000" || set "MOUOF=%COL%[91mOFF"
 	REM NIC
-	if not exist "%SYSTEMDRIVE%\Hone\HoneRevert\ognic1.reg" set "NICOF=%COL%[91mOFF"
+	if not exist "%SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\ognic1.reg" set "NICOF=%COL%[91mOFF"
 	REM Intel iGPU
 	reg query "HKLM\SOFTWARE\Intel\GMM" /v "DedicatedSegmentSize" | find "0x400" || set "DSSOF=%COL%[91mOFF"
 	REM Timer Res
 	sc query STR | find "RUNNING" || set "TMROF=%COL%[91mOFF"
 	REM Audio Service
-	sc query HoneAudio | find "RUNNING" || set "AUDOF=%COL%[91mOFF"
+	sc query HoneCTRLAudio | find "RUNNING" || set "AUDOF=%COL%[91mOFF"
 	REM Check If Applicable For PC
 	REM Laptop
 	wmic path Win32_Battery Get BatteryStatus | find "1" && set "PWROF=%COL%[93mN/A"
@@ -306,28 +306,28 @@ goto %PG%
 cls
 echo.
 echo                                                                                                                        %COL%[36mPage 1/2
-call :HoneTitle
+call :HoneCTRLTitle
 echo                                                               %COL%[1;4;34mTweaks%COL%[0m
 echo.
-echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m Power Plan %PWROF%                 %COL%[33m[%COL%[37m 2 %COL%[33m]%COL%[37m SvcHostSplitThreshold %MEMOF%      %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m CSRSS High Priority %CRSOF%
-echo              %COL%[90mDesktop Power Plan, not good         %COL%[90mChanges the split threshold for      %COL%[90mCSRSS is responsible for mouse input
-echo              %COL%[90mto use with a laptop battery.        %COL%[90mservice host to your RAM             %COL%[90mset to high to improve input latency
+echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m SvcHostSplitThreshold %MEMOF%      %COL%[33m[%COL%[37m 2 %COL%[33m]%COL%[37m CSRSS High Priority %CRSOF%
+echo              %COL%[90mChanges the split threshold for      %COL%[90mCSRSS is responsible for mouse input
+echo              %COL%[90mservice host to your RAM             %COL%[90mset to high to improve input latency
 echo.
-echo              %COL%[33m[%COL%[37m 4 %COL%[33m]%COL%[37m Timer Resolution %TMROF%           %COL%[33m[%COL%[37m 5 %COL%[33m]%COL%[37m MSI Mode %MSIOF%                   %COL%[33m[%COL%[37m 6 %COL%[33m]%COL%[37m Affinity %AFFOF%
+echo              %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m Timer Resolution %TMROF%           %COL%[33m[%COL%[37m 4 %COL%[33m]%COL%[37m MSI Mode %MSIOF%                   %COL%[33m[%COL%[37m 5 %COL%[33m]%COL%[37m Affinity %AFFOF%
 echo              %COL%[90mThis tweak changes how fast          %COL%[90mEnable MSI Mode for gpu and          %COL%[90mThis tweak will spread devices
 echo              %COL%[90myour cpu refreshes                   %COL%[90mnetwork adapters                     %COL%[90mon multiple cpu cores
 echo.
-echo              %COL%[33m[%COL%[37m 7 %COL%[33m]%COL%[37m W32 Priority Seperation %BLANK%    %COL%[33m[%COL%[37m 8 %COL%[33m]%COL%[37m Memory Optimization %ME2OF%        %COL%[33m[%COL%[37m 9 %COL%[33m]%COL%[37m Mouse Fix %MOUOF%
+echo              %COL%[33m[%COL%[37m 6 %COL%[33m]%COL%[37m W32 Priority Seperation %BLANK%    %COL%[33m[%COL%[37m 7 %COL%[33m]%COL%[37m Memory Optimization %ME2OF%        %COL%[33m[%COL%[37m 8 %COL%[33m]%COL%[37m Mouse Fix %MOUOF%
 echo              %COL%[90mOptimizes the usage priority of      %COL%[90mOptimizes your fsutil, win           %COL%[90mThis removes acceleration which
 echo              %COL%[90myour running services                %COL%[90mstartup settings and more            %COL%[90mmakes your aim inconsistent
 echo.
 echo                                                            %COL%[1;4;34mNvidia Tweaks%COL%[0m
 echo.
-echo              %COL%[33m[%COL%[37m 10 %COL%[33m]%COL%[37m Disable HDCP %HDCOF%              %COL%[33m[%COL%[37m 11 %COL%[33m]%COL%[37m Disable Preemption %CMAOF%        %COL%[33m[%COL%[37m 12 %COL%[33m]%COL%[37m ProfileInspector %NPIOF%
+echo              %COL%[33m[%COL%[37m 9 %COL%[33m]%COL%[37m Disable HDCP %HDCOF%              %COL%[33m[%COL%[37m 10 %COL%[33m]%COL%[37m Disable Preemption %CMAOF%        %COL%[33m[%COL%[37m 11 %COL%[33m]%COL%[37m ProfileInspector %NPIOF%
 echo              %COL%[90mDisable copy protection technology   %COL%[90mDisable preemption requests from     %COL%[90mWill edit your Nvidia control panel
 echo              %COL%[90mof illegal High Definition content   %COL%[90mthe GPU scheduler                    %COL%[90mand add various tweaks
 echo.
-echo              %COL%[33m[%COL%[37m 13 %COL%[33m]%COL%[37m Disable Nvidia Telemetry %NVTOF%  %COL%[33m[%COL%[37m 14 %COL%[33m]%COL%[37m Nvidia Tweaks %NVIOF%             %COL%[33m[%COL%[37m 15 %COL%[33m]%COL%[37m Disable Write Combining %DWCOF%
+echo              %COL%[33m[%COL%[37m 12 %COL%[33m]%COL%[37m Disable Nvidia Telemetry %NVTOF%  %COL%[33m[%COL%[37m 13 %COL%[33m]%COL%[37m Nvidia Tweaks %NVIOF%             %COL%[33m[%COL%[37m 14 %COL%[33m]%COL%[37m Disable Write Combining %DWCOF%
 echo              %COL%[90mRemove built in Nvidia telemetry     %COL%[90mVarious essential tweaks for         %COL%[90mStops data from being combined
 echo              %COL%[90mfrom your computer and driver.       %COL%[90mNvidia graphics cards                %COL%[90mand temporarily stored
 echo.
@@ -336,22 +336,21 @@ echo.
 echo                                     %COL%[90m[ B for back ]         %COL%[31m[ X to close ]         %COL%[36m[ N page two ]
 echo.
 set /p choice="%DEL%                                        %COL%[37mSelect a corresponding number to the options above > "
-if /i "%choice%"=="1" goto PowerPlan
-if /i "%choice%"=="2" goto ServicesOptimization
-if /i "%choice%"=="3" goto CSRSS
-if /i "%choice%"=="4" goto TimerRes
-if /i "%choice%"=="5" goto MSI
-if /i "%choice%"=="6" goto Affinity
-if /i "%choice%"=="7" goto W32PrioSep
-if /i "%choice%"=="8" goto MemOptimization
-if /i "%choice%"=="9" goto Mouse
-echo %NPIOF% | find "N/A" >nul && if "%choice%" geq "10" if "%choice%" leq "15" call :HoneCTRLError "You don't have an NVIDIA GPU" && goto Tweaks
-if /i "%choice%"=="10" goto DisableHDCP
-if /i "%choice%"=="11" goto DisablePreemtion
-if /i "%choice%"=="12" goto ProfileInspector
-if /i "%choice%"=="13" goto NVTelemetry
-if /i "%choice%"=="14" goto NvidiaTweaks
-if /i "%choice%"=="15" goto DisableWriteCombining
+if /i "%choice%"=="1" goto ServicesOptimization
+if /i "%choice%"=="2" goto CSRSS
+if /i "%choice%"=="3" goto TimerRes
+if /i "%choice%"=="4" goto MSI
+if /i "%choice%"=="5" goto Affinity
+if /i "%choice%"=="6" goto W32PrioSep
+if /i "%choice%"=="7" goto MemOptimization
+if /i "%choice%"=="8" goto Mouse
+echo %NPIOF% | find "N/A" >nul && if "%choice%" geq "10" if "%choice%" leq "15" call :HoneCTRLCTRLError "You don't have an NVIDIA GPU" && goto Tweaks
+if /i "%choice%"=="9" goto DisableHDCP
+if /i "%choice%"=="10" goto DisablePreemtion
+if /i "%choice%"=="11" goto ProfileInspector
+if /i "%choice%"=="12" goto NVTelemetry
+if /i "%choice%"=="13" goto NvidiaTweaks
+if /i "%choice%"=="14" goto DisableWriteCombining
 if /i "%choice%"=="X" exit /b
 if /i "%choice%"=="B" goto MainMenu
 if /i "%choice%"=="N" (set "PG=TweaksPG2") & goto TweaksPG2
@@ -361,7 +360,7 @@ goto Tweaks
 cls
 echo.
 echo                                                                                                                        %COL%[36mPage 2/2
-call :HoneTitle
+call :HoneCTRLTitle
 echo                                                           %COL%[1;4;34mNetwork Tweaks%COL%[0m
 echo.
 echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m Optimize TCP/IP %TCPOF%            %COL%[33m[%COL%[37m 2 %COL%[33m]%COL%[37m Optimize NIC %NICOF%               %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m Optimize Netsh %NETOF%
@@ -407,28 +406,6 @@ if /i "%choice%"=="B" goto MainMenu
 if /i "%choice%"=="N" (set "PG=TweaksPG1") & goto TweaksPG1
 goto TweaksPG2
 
-:PowerPlan
-echo %PWROF% | find "N/A" >nul && call :HoneCTRLError "This power plan isn't recommended for batteries." && goto Tweaks
-if "%PWROF%" == "%COL%[91mOFF" (
-	curl -g -k -L -# -o "%SYSTEMDRIVE%\Hone\Resources\HoneV2.pow" "https://github.com/auraside/HoneCTRL/raw/main/Files/HoneV2.pow"
-	powercfg /d 44444444-4444-4444-4444-444444444449
-	powercfg -import "%SYSTEMDRIVE%\Hone\Resources\HoneV2.pow" 44444444-4444-4444-4444-444444444449
-	powercfg /changename 44444444-4444-4444-4444-444444444449 "Hone Ultimate Power Plan V2" "The Ultimate Power Plan to increase FPS, improve latency and reduce input lag."
-REM Enable Idle on Hyper-Threading
-set THREADS=%NUMBER_OF_PROCESSORS%
-	for /f "tokens=2 delims==" %%n in ('wmic cpu get numberOfCores /value') do set CORES=%%n
-	if "%CORES%" == "%NUMBER_OF_PROCESSORS%" (
-		powercfg -setacvalueindex 44444444-4444-4444-4444-444444444449 sub_processor IDLEDISABLE 1
-) else (
-		powercfg -setacvalueindex 44444444-4444-4444-4444-444444444449 sub_processor IDLEDISABLE 0 
-)
-	powercfg -setacvalueindex 44444444-4444-4444-4444-444444444449 sub_processor IDLEDISABLE 0
-	powercfg -setactive "44444444-4444-4444-4444-444444444449"
-) >nul 2>&1 else (
-	powercfg -restoredefaultschemes
-) >nul 2>&1
-goto tweaks
-
 :ServicesOptimization
 if "%MEMOF%" == "%COL%[91mOFF" (
 	for /f "tokens=2 delims==" %%i in ('wmic os get TotalVisibleMemorySize /value') do set /a mem=%%i + 1024000
@@ -439,13 +416,13 @@ if "%MEMOF%" == "%COL%[91mOFF" (
 goto tweaks
 
 :TimerRes
-cd %SYSTEMDRIVE%\Hone\Resources
+cd %SYSTEMDRIVE%\HoneCTRL\Resources
 sc config "STR" start= auto >nul 2>&1
 start /b net start STR >nul 2>&1
 if "%TMROF%" == "%COL%[91mOFF" (
 	if not exist SetTimerResolutionService.exe (
 		REM https://forums.guru3d.com/threads/windows-timer-resolution-tool-in-form-of-system-service.376458/
-		curl -g -L -# -o "%SYSTEMDRIVE%\Hone\Resources\SetTimerResolutionService.exe" "https://github.com/auraside/HoneCTRL/raw/main/Files/SetTimerResolutionService.exe"
+		curl -g -L -# -o "%SYSTEMDRIVE%\HoneCTRL\Resources\SetTimerResolutionService.exe" "https://github.com/luke-beep/HoneCTRL/raw/main/Files/SetTimerResolutionService.exe"
 		%SYSTEMROOT%\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /i SetTimerResolutionService.exe
 	)
 	sc config "STR" start=auto
@@ -472,26 +449,6 @@ if "%TMROF%" == "%COL%[91mOFF" (
 ) >nul 2>&1
 goto tweaks
 
-REM :KBoost
-REM if "%KBOOF%" == "%COL%[91mOFF" (
-	REM for /f %%i in ('reg query "HKLM\System\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HKEY"') do (
-		REM reg add "%%a" /v "PowerMizerEnable" /t REG_DWORD /d "1" /f
-		REM reg add "%%a" /v "PowerMizerLevel" /t REG_DWORD /d "1" /f
-		REM reg add "%%a" /v "PowerMizerLevelAC" /t REG_DWORD /d "1" /f
-		REM reg add "%%a" /v "PerfLevelSrc" /t REG_DWORD /d "8738" /f
-	REM )
-REM ) >nul 2>&1 else (
-	REM for /f %%i in ('reg query "HKLM\System\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HKEY"') do (
-		REM reg delete "%%a" /v "PowerMizerEnable" /f 
-		REM reg delete "%%a" /v "PowerMizerLevel" /f
-		REM reg delete "%%a" /v "PowerMizerLevelAC" /f
-		REM reg delete "%%a" /v "PerfLevelSrc" /f
-	REM )
-REM ) >nul 2>&1
-REM call :HoneCTRLRestart "KBoost" "%KBOOF%"
-REM Mode 130,45
-REM goto Tweaks
-
 :CSRSS
 if "%CRSOF%" == "%COL%[91mOFF" (
 	reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions" /v CpuPriorityClass /t Reg_DWORD /d "4" /f
@@ -512,13 +469,13 @@ goto Tweaks
 
 :MSI
 if "%MSIOF%" == "%COL%[91mOFF" (
-	reg add "HKCU\Software\Hone" /v "MSIModeTweaks" /f
+	reg add "HKCU\Software\HoneCTRL" /v "MSIModeTweaks" /f
 	for /f %%g in ('wmic path win32_VideoController get PNPDeviceID ^| findstr /L "VEN_"') do reg add "HKLM\SYSTEM\CurrentControlSet\Enum\%%g\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties" /v "MSISupported" /t REG_DWORD /d "1" /f
 	for /f %%g in ('wmic path win32_VideoController get PNPDeviceID ^| findstr /L "VEN_"') do reg delete "HKLM\System\CurrentControlSet\Enum\%%g\Device Parameters\Interrupt Management\Affinity Policy" /v "DevicePriority" /f
 	for /f %%i in ('wmic path Win32_NetworkAdapter get PNPDeviceID ^| findstr /L "VEN_"') do reg add "HKLM\SYSTEM\CurrentControlSet\Enum\%%i\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties" /v "MSISupported" /t REG_DWORD /d "1" /f
 	for /f %%i in ('wmic path Win32_NetworkAdapter get PNPDeviceID ^| findstr /L "VEN_"') do reg delete "HKLM\System\CurrentControlSet\Enum\%%i\Device Parameters\Interrupt Management\Affinity Policy" /v "DevicePriority" /f
 ) >nul 2>&1 else (
-	reg delete "HKCU\Software\Hone" /v "MSIModeTweaks" /f
+	reg delete "HKCU\Software\HoneCTRL" /v "MSIModeTweaks" /f
 	for /f %%g in ('wmic path win32_VideoController get PNPDeviceID ^| findstr /L "VEN_"') do reg delete "HKLM\SYSTEM\CurrentControlSet\Enum\%%g\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties" /v "MSISupported" /f
 	for /f %%g in ('wmic path win32_VideoController get PNPDeviceID ^| findstr /L "VEN_"') do reg delete "HKLM\System\CurrentControlSet\Enum\%%g\Device Parameters\Interrupt Management\Affinity Policy" /v "DevicePriority" /f
 	for /f %%i in ('wmic path Win32_NetworkAdapter get PNPDeviceID ^| findstr /L "VEN_"') do reg delete "HKLM\SYSTEM\CurrentControlSet\Enum\%%i\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties" /v "MSISupported" /f
@@ -528,14 +485,14 @@ goto Tweaks
 
 :Affinity
 if "%AFFOF%" == "%COL%[91mOFF" (
-reg add "HKCU\Software\Hone" /v AffinityTweaks /f
+reg add "HKCU\Software\HoneCTRL" /v AffinityTweaks /f
 for /f "tokens=*" %%f in ('wmic cpu get NumberOfCores /value ^| find "="') do set %%f
 for /f "tokens=*" %%f in ('wmic cpu get NumberOfLogicalProcessors /value ^| find "="') do set %%f
 if "!NumberOfCores!" == "2" (
 	cls
 	echo You have 2 cores. Affinities won't work.
 	pause
-	reg delete "HKCU\Software\Hone" /v AffinityTweaks /f
+	reg delete "HKCU\Software\HoneCTRL" /v AffinityTweaks /f
 	goto Tweaks
 )
 if !NumberOfCores! gtr 4 (
@@ -578,7 +535,7 @@ for /f %%i in ('wmic path Win32_NetworkAdapter get PNPDeviceID^| findstr /l "PCI
 )
 )
 ) >nul 2>&1 else (
-reg delete "HKCU\Software\Hone" /v AffinityTweaks /f
+reg delete "HKCU\Software\HoneCTRL" /v AffinityTweaks /f
 for /f %%i in ('wmic path Win32_USBController get PNPDeviceID^| findstr /l "PCI\VEN_"') do (
 	reg delete "HKLM\System\CurrentControlSet\Enum\%%i\Device Parameters\Interrupt Management\Affinity Policy" /v "DevicePolicy" /f
 	reg delete "HKLM\System\CurrentControlSet\Enum\%%i\Device Parameters\Interrupt Management\Affinity Policy" /v "AssignmentSetOverride" /f
@@ -645,7 +602,7 @@ goto Tweaks
 
 :MemOptimization
 if "%ME2OF%" == "%COL%[91mOFF" (
-	reg add "HKCU\Software\Hone" /v "MemoryTweaks" /f
+	reg add "HKCU\Software\HoneCTRL" /v "MemoryTweaks" /f
 	REM Disable FTH
 	reg add "HKLM\Software\Microsoft\FTH" /v "Enabled" /t Reg_DWORD /d "0" /f
 	REM Disable Desktop Composition
@@ -699,7 +656,7 @@ if "%ME2OF%" == "%COL%[91mOFF" (
 		fsutil behavior set disabledeletenotify 0
 	)
 ) >nul 2>&1 else (
-	reg delete "HKCU\Software\Hone" /v MemoryTweaks /f
+	reg delete "HKCU\Software\HoneCTRL" /v MemoryTweaks /f
 	REM Delete FTH
 	reg delete "HKLM\Software\Microsoft\FTH" /v "Enabled" /f
 	REM Delete Desktop Composition
@@ -794,10 +751,10 @@ goto tweaks
 :DisableHDCP
 for /f %%a in ('reg query "HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}" /t REG_SZ /s /e /f "NVIDIA" ^| findstr "HKEY"') do (
 	if "%HDCOF%" == "%COL%[91mOFF" (
-		reg add "HKCU\Software\Hone" /v HDCTweaks /f
+		reg add "HKCU\Software\HoneCTRL" /v HDCTweaks /f
 		reg add "%%a" /v "RMHdcpKeyglobZero" /t REG_DWORD /d "1" /f
 	) else (
-		reg delete "HKCU\Software\Hone" /v HDCTweaks /f
+		reg delete "HKCU\Software\HoneCTRL" /v HDCTweaks /f
 		reg add "%%a" /v "RMHdcpKeyglobZero" /t REG_DWORD /d "0" /f
 	)
 ) >nul 2>&1
@@ -821,12 +778,12 @@ goto Tweaks
 
 :ProfileInspector
 if "%NPIOF%" == "%COL%[91mOFF" (
-	reg add "HKCU\Software\Hone" /v NpiTweaks /f
-	rmdir /S /Q "%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector\"
-	curl -g -L -# -o %SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector.zip "https://github.com/Orbmu2k/nvidiaProfileInspector/releases/latest/download/nvidiaProfileInspector.zip"
-	powershell -NoProfile Expand-Archive '%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector.zip' -DestinationPath '%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector\'
-	del /F /Q "%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector.zip"
-	curl -g -L -# -o "%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector\Latency_and_Performances_Settings_by_Hone_Team2.nip" "https://raw.githubusercontent.com/auraside/HoneCTRL/main/Files/Latency_and_Performances_Settings_by_Hone_Team2.nip"
+	reg add "HKCU\Software\HoneCTRL" /v NpiTweaks /f
+	rmdir /S /Q "%SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector\"
+	curl -g -L -# -o %SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector.zip "https://github.com/Orbmu2k/nvidiaProfileInspector/releases/latest/download/nvidiaProfileInspector.zip"
+	powershell -NoProfile Expand-Archive '%SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector.zip' -DestinationPath '%SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector\'
+	del /F /Q "%SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector.zip"
+	curl -g -L -# -o "%SYSTEMDRIVE%\HoneCTRL\Resources\nvidiaProfileInspector\Latency_and_Performances_Settings_by_HoneCTRL_Team2.nip" "https://raw.githubusercontent.com/auraside/HoneCTRL/main/Files/Latency_and_Performances_Settings_by_Hone_Team2.nip"
 	cd "%SYSTEMDRIVE%\Hone\Resources\nvidiaProfileInspector\"
 	nvidiaProfileInspector.exe "Latency_and_Performances_Settings_by_Hone_Team2.nip"
 ) >nul 2>&1 else (
@@ -960,7 +917,7 @@ Reg query "HKCU\Software\Hone" /v "WifiDisclaimer" >nul 2>&1 && goto TCPIP2
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -1063,7 +1020,7 @@ Reg query "HKCU\Software\Hone" /v "WifiDisclaimer2" >nul 2>&1 && goto NIC2
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -1350,7 +1307,7 @@ goto tweaks
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo.
 echo.
@@ -1794,7 +1751,7 @@ goto :eof
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo              %COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m Quality                        %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m Optimal                        %COL%[33m[ %COL%[37m3 %COL%[33m]%COL%[37m Performance
 echo              %COL%[90mSettings for the best                %COL%[90mThe best for performance             %COL%[90mSettings for the best
@@ -2257,7 +2214,7 @@ goto HoneRenders
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                              %COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m Quality                                        %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m Performance
 echo                              %COL%[90mSettings for the best                                %COL%[90mSettings for the best
@@ -2584,7 +2541,7 @@ where /q ffmpeg.exe || if not exist %SYSTEMDRIVE%\ffmpeg call :ffmpeginstall
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                            %COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m 4k                                             %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m 8k
 echo                            %COL%[90mModify the scale of a video                          %COL%[90mModify the scale of a video
@@ -2689,7 +2646,7 @@ where /q ffmpeg.exe || if not exist %SYSTEMDRIVE%\ffmpeg call :ffmpeginstall
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                         %COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m Heavy                                          %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m Light
 echo                         %COL%[90mCompress a video                     	 	     %COL%[90mCompress a video
@@ -2782,7 +2739,7 @@ goto :eof
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                    	     %COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m Accurate                                   %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m Smooth
 echo                     	     %COL%[90mAutomated Blur settings                          %COL%[90mAutomated Blur settings
@@ -2822,7 +2779,7 @@ goto FPSGames
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo					%COL%[33m[ %COL%[37m1 %COL%[33m]%COL%[37m 60-120FPS                                   %COL%[33m[ %COL%[37m2 %COL%[33m]%COL%[37m 240FPS+
 echo					%COL%[90mAutomated Blur settings				  %COL%[90mAutomated Blur settings
@@ -2949,7 +2906,7 @@ goto skip
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo.
 echo.
@@ -3086,7 +3043,7 @@ goto HoneRenders
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo                       %COL%[90mUnfortunately, Hone cannot supply unofficial distributions of software. If you
 echo                       %COL%[90mcannot buy Vegas Pro, an alternative that we recommend is a freemium video editing software
 echo                       %COL%[90mcalled 'DaVinci Resolve' (note: this program does not contain render settings)^^!
@@ -3169,7 +3126,7 @@ reg query "HKCU\Software\Hone" /v "Disclaimer2" >nul 2>&1 && goto Advanced
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -3235,7 +3192,7 @@ for %%i in (DSCOF AUTOF DRIOF BCDOF NONOF CS0OF TOFOF PS0OF IDLOF CONG DPSOF) do
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo                                                           %COL%[1;4;34mNetwork Tweaks%COL%[0m
 echo.
 echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m Disable Task Offloading %TOFOF%    %COL%[33m[%COL%[37m 2 %COL%[33m]%COL%[37m NonBestEffortLimit %NONOF%         %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m AutoTuning %AUTOF%
@@ -3356,7 +3313,7 @@ Reg query "HKCU\Software\Hone" /v "WifiDisclaimer3" >nul 2>&1 && goto Congestion
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -3708,7 +3665,7 @@ if "%choice%"=="1" goto More
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo                                        %COL%[90m HoneCTRL is a free and open-source desktop utility
 echo                                        %COL%[90m    made to improve your day-to-day productivity
@@ -3905,7 +3862,7 @@ if /i "%choice%" == "y" (
 cls
 echo.
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m AUTO                 %COL%[33m[%COL%[37m 2 %COL%[33m]%COL%[37m MANUAL      %COL%[33m[%COL%[37m 3 %COL%[33m]%COL%[37m RESET
 echo              %COL%[90mApply all recommended         %COL%[90mCustomize your experience      %COL%[90mReset all Aesthetics
@@ -3945,7 +3902,7 @@ goto Aesthetics
 :Auto
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo                                                               %COL%[1;4;34mAesthetics Manual%COL%[0m
 echo.
 echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m Auto Transparency
@@ -4032,7 +3989,7 @@ goto Auto
 :Manual
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo                                                               %COL%[1;4;34mAesthetics Manual%COL%[0m
 echo.
 echo              %COL%[33m[%COL%[37m 1 %COL%[33m]%COL%[37m Transparency
@@ -4059,7 +4016,7 @@ curl -g -LJ -# "https://github.com/auraside/HoneCTRL/raw/main/Files/Aesthetics/C
 :TransparencySetup1
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Please select a transparency level, we recommend 200 or above (Lower = more transparent)
 echo.
@@ -4082,7 +4039,7 @@ goto TransparencySetup1
 :TransparencySetup2
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want the right click menu to be transparent?
 echo.
@@ -4100,7 +4057,7 @@ goto TransparencySetup2
 :TransparencySetup3
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want the Taskbar to be transparent?
 echo.
@@ -4117,7 +4074,7 @@ goto TransparencySetup3
 :TransparencySetup4
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want the Start Menu to be transparent?
 echo.
@@ -4134,7 +4091,7 @@ goto TransparencySetup4
 :TransparencySetup5
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want Explorer to be transparent?
 echo.
@@ -4151,7 +4108,7 @@ goto TransparencySetup5
 :TransparencySetup6
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want Firefox to be transparent?
 echo.
@@ -4168,7 +4125,7 @@ goto TransparencySetup6
 :TransparencySetup7
 cls
 echo.
-call :HoneTitle
+call :HoneCTRLTitle
 echo.
 echo Do you want Google Chrome to be transparent?
 echo.
