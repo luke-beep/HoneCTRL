@@ -7,7 +7,6 @@
   </a>
 
 <h3 align="center">HoneCTRL</h3>
-
   <p align="center">
     HoneCTRL is a free and open source desktop utility that aims to improve FPS, reduce input lag, and optimize network performance for video game titles and day-to-day productivity.
   <p align="center">
@@ -21,6 +20,8 @@
     <a href="https://github.com/luke-beep/HoneCTRL/issues">Request Feature</a>
   </p>
 </div>
+
+![Alt text](https://github.com/luke-beep/HoneCTRL/blob/main/Files/Product/image.png?raw=true)
 
 <details>
   <summary>Table of Contents</summary>
@@ -112,7 +113,4 @@ Project Link: [https://github.com/luke-beep/HoneCTRL](https://github.com/luke-be
 * [sed](https://gnuwin32.sourceforge.net/packages/sed.htm)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-[product-screenshot]: https://user-images.githubusercontent.com/107450640/173981200-3be429ba-54b5-4be2-9a86-e190fb39c854.png
-
 
