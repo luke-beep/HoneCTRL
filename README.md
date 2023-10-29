@@ -36,10 +36,8 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -79,12 +77,6 @@ Distributed under the GNU AGPLv3  License. See `LICENSE.txt` for more informatio
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Contact
-
-[https://github.com/luke-beep/HoneCTRL](https://github.com/luke-beep/HoneCTRL)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ## Acknowledgments
 
 * [Nvidia Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector)
@@ -95,6 +87,7 @@ Distributed under the GNU AGPLv3  License. See `LICENSE.txt` for more informatio
 * [REAL](https://github.com/miniant-git/REAL)
 * [nssm](https://nssm.cc/)
 * [sed](https://gnuwin32.sourceforge.net/packages/sed.htm)
+* [AuraSide](https://github.com/auraside)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
