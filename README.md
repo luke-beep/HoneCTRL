@@ -22,9 +22,6 @@
   </p>
 </div>
 
-
-
-<!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -65,11 +62,6 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- GETTING STARTED -->
-
-
 ## Getting Started
 
 To run the optimizer is easy, all you need to do is double click HoneCTRL.bat and run it as admin
@@ -89,19 +81,12 @@ Even though we have an automatic restore point feature some users have issues wi
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
 HoneCTRL can be used on any PC running windows 10 and above.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -117,27 +102,18 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the GNU AGPLv3  License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- CONTACT -->
 ## Contact
 
 Project Link: [https://github.com/luke-beep/HoneCTRL](https://github.com/luke-beep/HoneCTRL)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * [Nvidia Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector)
