@@ -52,20 +52,6 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-### Built With
-
-* [Batch](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands)
-* [Powershell](https://docs.microsoft.com/en-us/powershell/)
-* [CLI](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjQ46f--LD4AhWCIEQIHR5CDIMQFnoECAUQAQ&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCommand-line_interface&usg=AOvVaw3Zaova7HVAG2DR4ROgZNEc)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## Getting Started
-
-To run the optimizer is easy, all you need to do is double click HoneCTRL.bat and run it as admin
-
 ### Warning
 
 Even though we have an automatic restore point feature some users have issues with it, we **highly recommend** [making a manual restore point](https://support.microsoft.com/en-us/windows/create-a-system-restore-point-77e02e2a-3298-c869-9974-ef5658ea3be9) before launch.
