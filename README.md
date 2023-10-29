@@ -21,8 +21,6 @@
   </p>
 </div>
 
-![Alt text](https://github.com/luke-beep/HoneCTRL/blob/main/Files/Product/HoneCTRL.png?raw=true)
-
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -49,7 +47,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/luke-beep/HoneCTRL)
+![Alt text](https://github.com/luke-beep/HoneCTRL/blob/main/Files/Product/HoneCTRL.png?raw=true)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -57,20 +55,6 @@
 
 Even though we have an automatic restore point feature some users have issues with it, we **highly recommend** [making a manual restore point](https://support.microsoft.com/en-us/windows/create-a-system-restore-point-77e02e2a-3298-c869-9974-ef5658ea3be9) before launch.
 
-
-### Installation
-
-1. Download the latest HoneCTRL Version
-   ```sh
-   https://github.com/luke-beep/HoneCTRL/releases/latest/download/HoneCTRL.Bat
-   ```
-2. Right click HoneCTRL.bat and run it as admin
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## Usage
-
-HoneCTRL can be used on any PC running windows 10 and above.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -97,7 +81,7 @@ Distributed under the GNU AGPLv3  License. See `LICENSE.txt` for more informatio
 
 ## Contact
 
-Project Link: [https://github.com/luke-beep/HoneCTRL](https://github.com/luke-beep/HoneCTRL)
+[https://github.com/luke-beep/HoneCTRL](https://github.com/luke-beep/HoneCTRL)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
