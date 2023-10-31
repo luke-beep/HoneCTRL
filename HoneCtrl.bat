@@ -423,6 +423,7 @@ if "%TMROF%" == "%COL%[91mOFF" (
 		curl -g -L -# -o "%SYSTEMDRIVE%\HoneCTRL\Resources\SetTimerResolutionService.exe" "https://github.com/luke-beep/HoneCTRL/raw/main/Files/SetTimerResolutionService.exe"
 		%SYSTEMROOT%\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /i SetTimerResolutionService.exe
 	)
+	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" /v "GlobalTimerResolutionRequests" /t REG_DWORD /d 1 /f REM Windows 11 & Windows Server 2022
 	sc config "STR" start=auto
 	start /b net start STR
 	bcdedit /set disabledynamictick yes
@@ -439,6 +440,7 @@ if "%TMROF%" == "%COL%[91mOFF" (
 		bcdedit /set useplatformtick yes
 	)
 ) >nul 2>&1 else (
+	reg delete "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" /v "GlobalTimerResolutionRequests" /f
 	sc config "STR" start=disabled
 	start /b net stop STR
 	bcdedit /deletevalue useplatformclock
