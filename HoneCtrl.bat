@@ -107,11 +107,6 @@ if "%LOCAL%" gtr "%LOCALTWO%" (
 	Mode 130,45
 )
 
-REM Restart Checks
-if exist "%SYSTEMDRIVE%\HoneCTRL\Drivers\Nvidia.exe" "%SYSTEMDRIVE%\Desktop\HoneCTRL\Drivers\Nvidia.exe" >nul 2>&1
-if exist "%SYSTEMDRIVE%\HoneCTRL\Drivers\Nvidia.exe" del /Q "%SYSTEMDRIVE%\Desktop\HoneCTRL\Drivers\Nvidia.exe" >nul 2>&1
-if exist "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Driverinstall.bat" del /Q "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Driverinstall.bat" >nul 2>&1
-
 REM Attempt to enable WMIC
 dism /online /enable-feature /featurename:MicrosoftWindowsWMICore /NoRestart >nul 2>&1
 
@@ -121,9 +116,9 @@ set firstlaunch=1
 if "%firstlaunch%" == "0" (goto MainMenu)
 
 REM Restore Point
-REM reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
-REM powershell -ExecutionPolicy Unrestricted -NoProfile Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
-REM powershell -ExecutionPolicy Unrestricted -NoProfile Checkpoint-Computer -Description 'HoneCTRL Restore Point' >nul 2>&1
+reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
+powershell -ExecutionPolicy Unrestricted -NoProfile Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
+powershell -ExecutionPolicy Unrestricted -NoProfile Checkpoint-Computer -Description 'HoneCTRL Restore Point' >nul 2>&1
 
 REM HKCU & HKLM backup
 
@@ -3212,9 +3207,9 @@ echo.
 echo.
 echo                                                            %COL%[1;4;34mOther Tweaks%COL%[0m
 echo.
-echo              %COL%[33m[%COL%[37m 9 %COL%[33m]%COL%[37m Nvidia Driver %DRIOF%              %COL%[33m[%COL%[37m 10 %COL%[33m]%COL%[37m BCDEdit %BCDOF%                   %COL%[33m[%COL%[37m 11 %COL%[33m]%COL%[37m Disable USB Power Savings %DPSOF%
-echo              %COL%[90mInstall the best tweaked nvidia      %COL%[90mTweaks your windows boot config      %COL%[90mDisable USB power savings that
-echo              %COL%[90mdriver for latency and fps           %COL%[90mdata to optimized settings           %COL%[90maffect latency
+echo              %COL%[33m[%COL%[37m 10 %COL%[33m]%COL%[37m BCDEdit %BCDOF%                   %COL%[33m[%COL%[37m 11 %COL%[33m]%COL%[37m Disable USB Power Savings %DPSOF%
+echo              %COL%[90mTweaks your windows boot config      %COL%[90mDisable USB power savings that
+echo              %COL%[90mdata to optimized settings           %COL%[90maffect latency
 echo.
 echo.
 echo.
@@ -3229,9 +3224,8 @@ if /i "%choice%"=="5" goto Congestion
 if /i "%choice%"=="6" goto cstates
 if /i "%choice%"=="7" goto pstates0
 if /i "%choice%"=="8" goto DisableIdle
-if /i "%choice%"=="9" goto Driver
-if /i "%choice%"=="10" goto BCDEdit
-if /i "%choice%"=="11" goto DUSBPowerSavings
+if /i "%choice%"=="9" goto BCDEdit
+if /i "%choice%"=="10" goto DUSBPowerSavings
 if /i "%choice%"=="X" exit /b
 if /i "%choice%"=="B" goto MainMenu
 goto Advanced
@@ -3382,45 +3376,6 @@ REM		powercfg -setdcvalueindex scheme_current sub_processor IDLEDISABLE 0
 REM	)
 )
 goto Advanced
-
-:Driver
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\DevicePath" /v "NoAutoUpdate" /t REG_DWORD /d 1 /f >nul 2>&1
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\DriverSearching" /v "DriverUpdateWizardWuSearchEnabled" /t REG_DWORD /d 0 /f >nul 2>&1
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f >nul 2>&1
-reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AUCustom" /v "TurnOffWindowsUpdateDeviceDriverSearching" /t REG_DWORD /d 1 /f >nul 2>&1
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 0 /f >nul 2>&1
-cls
-echo This will uninstall your current graphics driver. The optimized driver will be installed after you reboot.
-echo Please be patient and wait until the script finishes.
-echo.
-echo Would you like to install?
-%SYSTEMROOT%\System32\choice.exe /c:YN /n /m "[Y] Yes  [N] No"
-if %errorlevel% == 2 goto Advanced
-cd "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-curl -LJ https://github.com/luke-beep/HoneCTRL/blob/main/Files/Driverinstall.bat?raw=true -o Driverinstall.bat 
-title Executing DDU...
-curl -g -L -# -o "%SYSTEMDRIVE%\HoneCTRL\Resources\DDU.zip" "https://github.com/luke-beep/HoneCTRL/raw/main/Files/DDU.zip"
-powershell -NoProfile Expand-Archive '%SYSTEMDRIVE%\HoneCTRL\Resources\DDU.zip' -DestinationPath '%SYSTEMDRIVE%\HoneCTRL\Resources\DDU\' >nul 2>&1
-del "%SYSTEMDRIVE%\HoneCTRL\Resources\DDU.zip"
-cd %SYSTEMDRIVE%\HoneCTRL\Resources\DDU
-DDU.exe -silent -cleannvidia
-title Restart Confirmation
-cls
-echo Your PC NEEDS to restart before downloading and installing the driver!
-echo.
-echo Other Nvidia tweaks will not be available until you restart.
-echo.
-echo Drivers will be installed upon PC startup.
-echo.
-:restartchoice
-set /p choice=Would you like to continue and restart your PC? Y or N?: 
-if /i "%choice%" == "y" (
-	shutdown /r /f /d p:0:0
-) else if /i "%choice%" == "n" (
-	goto Advanced
-) else (
-	goto restartchoice
-)
 
 :BCDEdit
 if "%BCDOF%" == "%COL%[91mOFF" (
