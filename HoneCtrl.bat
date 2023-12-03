@@ -75,13 +75,13 @@ if /i "!input!" neq "i agree" goto Disclaimer
 reg add "HKCU\Software\HoneCTRL" /v "Disclaimer" /f >nul 2>&1
 
 :CheckForUpdates
-set local=2.7
+set local=2.9
 set localtwo=%LOCAL%
 if exist "%TEMP%\Updater.bat" DEL /S /Q /F "%TEMP%\Updater.bat" >nul 2>&1
 curl -g -L -# -o "%TEMP%\Updater.bat" "https://raw.githubusercontent.com/luke-beep/HoneCTRL/main/Files/HoneCTRLVersion" >nul 2>&1
 call "%TEMP%\Updater.bat"
 if "%LOCAL%" gtr "%LOCALTWO%" (
-	clsr
+	cls
 	Mode 65,16
 	echo.
 	echo  --------------------------------------------------------------
@@ -106,6 +106,8 @@ if "%LOCAL%" gtr "%LOCALTWO%" (
 	)
 	Mode 130,45
 )
+goto RestorePoint
+
 
 REM Attempt to enable WMIC
 dism /online /enable-feature /featurename:MicrosoftWindowsWMICore /NoRestart >nul 2>&1
@@ -116,9 +118,30 @@ set firstlaunch=1
 if "%firstlaunch%" == "0" (goto MainMenu)
 
 REM Restore Point
+:RestorePoint
+cls
 reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
+Mode 65,16
+echo.
+echo  --------------------------------------------------------------
+echo                           Restore Point
+echo  --------------------------------------------------------------
+echo.
+echo                       Create a restore point?
+echo.
+echo.
+echo.
+echo.
+echo      [Y] Yes
+echo      [N] No
+echo.
+%SYSTEMROOT%\System32\choice.exe /c:YN /n /m "%DEL%                                >:"
+set choice=!errorlevel!
+if !choice! == 1 (
 powershell -ExecutionPolicy Unrestricted -NoProfile Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
 powershell -ExecutionPolicy Unrestricted -NoProfile Checkpoint-Computer -Description 'HoneCTRL Restore Point' >nul 2>&1
+)
+Mode 130,45
 
 REM HKCU & HKLM backup
 
@@ -3572,11 +3595,11 @@ echo                  %COL%[33m[ %COL%[37m1 %COL%[33m] %COL%[37mAbout           
 echo.
 echo.
 echo                  %COL%[33m[ %COL%[37m3 %COL%[33m] %COL%[37mBackup                                                  %COL%[33m[ %COL%[37m4 %COL%[33m] %COL%[37mCredits
-echo                  %COL%[90mBackup your current registry ^& create a
-echo                  %COL%[90mrestore point used to revert tweaks applied.
+echo                  %COL%[90mBackup your current registry.
 echo.
 echo.
-echo.                  
+echo                  %COL%[33m[ %COL%[37m5 %COL%[33m] %COL%[37mRestore Point
+echo                  %COL%[90mCreate a restore point.                 
 echo.
 echo.
 echo.
@@ -3593,6 +3616,7 @@ if "%choice%"=="1" goto About
 if "%choice%"=="2" goto ViewDisclaimer
 if "%choice%"=="3" call:Backup
 if "%choice%"=="4" goto Credits
+if "%choice%"=="5" call:RestorePoint
 if /i "%choice%"=="6" goto MainMenu
 if /i "%choice%"=="7" exit /b
 goto More
@@ -3661,7 +3685,7 @@ echo %COL%[97m                                                       W1zzard - (
 echo %COL%[97m                                                       M2-Team - (Nsudo)
 echo %COL%[97m                                                       ToastyX - (Restart64)
 echo %COL%[97m                                                          wj32 - (Purgestandby)
-echo %COL%[97m                                                     mini)(ant - (REAL)
+echo %COL%[97m                                                     miniant - (REAL)
 echo %COL%[97m                                                          nssm - (Iain Patterson)
 echo.
 echo.
@@ -3673,9 +3697,6 @@ set choice=%errorlevel%
 if "%choice%"=="1" goto More
 
 :Backup
-reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v "SystemRestorePointCreationFrequency" /t REG_DWORD /d 0 /f >nul 2>&1
-powershell Enable-ComputerRestore -Drive 'C:\', 'D:\', 'E:\', 'F:\', 'G:\' >nul 2>&1
-powershell Checkpoint-Computer -Description 'HoneCTRL Restore Point' >nul 2>&1
 for /F "tokens=2" %%i in ('date /t') do set date=%%i  >nul 2>&1
 set date1=%date:/=.%  >nul 2>&1
 md %SYSTEMDRIVE%\HoneCTRL\HoneCTRLRevert\%date1%  >nul 2>&1
@@ -3698,7 +3719,7 @@ echo  --------------------------------------------------------------
 echo                   This tweak is not applicable
 echo  --------------------------------------------------------------
 echo.
-echo      You aren't able to use this optimization
+echo      You aren't able to use this optimization :(
 echo.
 echo      %~1
 echo.
